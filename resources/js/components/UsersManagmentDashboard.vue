@@ -13,6 +13,10 @@
         {{ success_msg }}
       </div>
 
+      <div class="alert alert-success" v-if="unauthorize_msg">
+        {{ unauthorize_msg }}
+      </div>
+
       <PaginatorDetails :results="results" v-if="results" />
       <table class="table table-hover">
         <thead>
@@ -71,6 +75,7 @@ export default {
     return {
       results: null,
       success_msg: "",
+      unauthorize_msg: "",
       params: {
         page: 1,
       },
@@ -99,7 +104,7 @@ export default {
       this.setActive('dashboard');
       this.success_msg = event;
       this.getUsers();
-      this.removeSuccessMsg(event);
+      this.removeSuccessMsg(event)
     },
     removeSuccessMsg(msg) {
       this.success_msg = msg;
@@ -107,10 +112,22 @@ export default {
         this.success_msg = null
       }, 4500);
     },
+    removeUnauthorizeMsg(msg) {
+      this.unauthorize_msg = msg;
+      setTimeout(() => {
+        this.unauthorize_msg = null
+      }, 4500);
+    },
     removeUser(user) {
         let checkDeletion = confirm('Do you actually want to Delete ' + user.name);
         if (checkDeletion) {
-            axios.post('/data/users/' + user.id, {_method: 'DELETE'}).then(response => console.log(response.data))
+            axios.post('/data/users/' + user.id, {_method: 'DELETE'}).then(response =>
+                console.log(response.data)
+            ).catch(error => {
+                if (error.response.status === 403) {
+                    this.removeUnauthorizeMsg('Unauthorized To Delete Users');
+                }
+            })
         }
     }
   },
