@@ -2128,6 +2128,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2141,6 +2145,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       results: null,
       success_msg: "",
+      unauthorize_msg: "",
       params: {
         page: 1
       },
@@ -2187,7 +2192,17 @@ __webpack_require__.r(__webpack_exports__);
         _this3.success_msg = null;
       }, 4500);
     },
+    removeUnauthorizeMsg: function removeUnauthorizeMsg(msg) {
+      var _this4 = this;
+
+      this.unauthorize_msg = msg;
+      setTimeout(function () {
+        _this4.unauthorize_msg = null;
+      }, 4500);
+    },
     removeUser: function removeUser(user) {
+      var _this5 = this;
+
       var checkDeletion = confirm('Do you actually want to Delete ' + user.name);
 
       if (checkDeletion) {
@@ -2195,6 +2210,10 @@ __webpack_require__.r(__webpack_exports__);
           _method: 'DELETE'
         }).then(function (response) {
           return console.log(response.data);
+        })["catch"](function (error) {
+          if (error.response.status === 403) {
+            _this5.removeUnauthorizeMsg('Unauthorized To Delete Users');
+          }
         });
       }
     }
@@ -38154,6 +38173,14 @@ var render = function() {
                 _vm.success_msg
                   ? _c("div", { staticClass: "alert alert-success" }, [
                       _vm._v("\n      " + _vm._s(_vm.success_msg) + "\n    ")
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.unauthorize_msg
+                  ? _c("div", { staticClass: "alert alert-success" }, [
+                      _vm._v(
+                        "\n      " + _vm._s(_vm.unauthorize_msg) + "\n    "
+                      )
                     ])
                   : _vm._e(),
                 _vm._v(" "),
