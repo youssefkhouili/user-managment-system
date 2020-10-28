@@ -121,9 +121,9 @@ export default {
     removeUser(user) {
         let checkDeletion = confirm('Do you actually want to Delete ' + user.name);
         if (checkDeletion) {
-            axios.post('/data/users/' + user.id, {_method: 'DELETE'}).then(response =>
-                console.log(response.data)
-            ).catch(error => {
+            axios.post('/data/users/' + user.id, {_method: 'DELETE'}).then(response => {
+                this.renderSuccess("Successfully Deleted " + user.name);
+            }).catch(error => {
                 if (error.response.status === 403) {
                     this.removeUnauthorizeMsg('Unauthorized To Delete Users');
                 }

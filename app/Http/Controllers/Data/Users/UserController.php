@@ -13,12 +13,12 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            if (Auth::user()->isAdmin()) {
+            if (!Auth::user()->isAdmin()) {
                 return response('Unauthorized', 403);
             }
 
             return $next($request);
-        })->only('destroy');
+        })->only('destroy', 'index');
     }
 
     public function index()
@@ -34,6 +34,10 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        return "successfully deleted {$user->name}";
+        $user->delete();
+
+        return response()->json(["msg" => "Successfully deleted $user->name"]);
+
+        // return "successfully deleted {$user->name}";
     }
 }

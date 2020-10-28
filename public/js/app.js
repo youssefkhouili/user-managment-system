@@ -2209,7 +2209,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/data/users/' + user.id, {
           _method: 'DELETE'
         }).then(function (response) {
-          return console.log(response.data);
+          _this5.renderSuccess("Successfully Deleted " + user.name);
         })["catch"](function (error) {
           if (error.response.status === 403) {
             _this5.removeUnauthorizeMsg('Unauthorized To Delete Users');
