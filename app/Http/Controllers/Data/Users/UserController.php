@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Data\Users;
 
+use App\Events\Users\CreatedUser;
+use App\Events\Users\DeletingUser;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
@@ -29,12 +31,15 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->only('name', 'email', 'role') + ['password' => bcrypt($request->password)]);
+        event(new CreatedUser($user));
         return response()->json(["user" => $user]);
     }
 
     public function destroy(User $user)
     {
         $user->delete();
+
+        event(new DeletingUser($user));
 
         return response()->json(["msg" => "Successfully deleted $user->name"]);
 
