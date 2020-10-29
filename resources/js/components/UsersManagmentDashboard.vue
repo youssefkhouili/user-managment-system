@@ -34,7 +34,10 @@
             <td>{{ user.user_since }}</td>
             <td>
               <div class="btn-group">
-                <button class="btn btn-sm btn-warning mr-2">
+                <button class="btn btn-sm btn-warning" @click="viewUserLogs(user)">
+                  <i class="fa fa-file" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-sm btn-warning mx-2">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
                 </button>
                 <button class="btn btn-sm btn-danger" @click="removeUser(user)">
@@ -57,6 +60,11 @@
                @created-user="renderSuccess"
                >
   </create-user>
+  <user-log
+    v-if="user && active.UserLogs"
+    :user="user"
+    @view-dashboard="setActive('dashboard')"
+    ></user-log>
   </div>
 </template>
 
@@ -64,15 +72,18 @@
 import Paginator from "../components/utilities/pagination/Paginator.vue";
 import PaginatorDetails from "../components/utilities/pagination/PaginatorDetails.vue";
 import CreateUser from "../components/CreateUser.vue";
+import UserLog from "../components/logs/UserLogs.vue";
 
 export default {
   components: {
     Paginator,
     PaginatorDetails,
-    CreateUser
+    CreateUser,
+    UserLog
   },
   data() {
     return {
+      user: null,
       results: null,
       success_msg: "",
       unauthorize_msg: "",
@@ -81,7 +92,8 @@ export default {
       },
       active: {
           dashboard: true,
-          createdUser: false
+          createdUser: false,
+          UserLogs: false
       }
     };
   },
@@ -129,6 +141,11 @@ export default {
                 }
             })
         }
+    },
+    viewUserLogs(user) {
+        this.user = user;
+        this.setActive('UserLogs')
+
     }
   },
   mounted() {

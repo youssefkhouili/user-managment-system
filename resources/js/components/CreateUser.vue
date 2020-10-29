@@ -2,7 +2,7 @@
     <div class="card mt-4">
         <div class="card-body">
             <h3><button class="btn btn-sm btn-outline-success mr-4" @click="$emit('view-dashboard')"><i class="fa fa-arrow-left"></i></button> hello world</h3>
-            <div class="alert alert-warning" v-if="errors.length ">
+            <div class="alert alert-warning" v-if="errors.length">
                 <ul>
                     <li v-for="error in errors" :key="error" class="list-unstyled">{{ error }}</li>
                 </ul>
