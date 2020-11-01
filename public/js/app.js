@@ -2251,6 +2251,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2261,11 +2263,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    user: {
-      type: Object,
-      required: true
+  mounted: function mounted() {
+    this.getLogs();
+  },
+  props: ['user'],
+  data: function data() {
+    return {
+      results: null,
+      params: {
+        page: 1
+      }
+    };
+  },
+  methods: {
+    getLogs: function getLogs() {
+      var _this = this;
+
+      axios.get('/data/users/logs/' + this.user.id, {
+        params: this.params
+      }).then(function (response) {
+        _this.results = response.data.results;
+      });
     }
   }
 });
@@ -38385,16 +38421,63 @@ var render = function() {
     _c("div", { staticClass: "card mt-3" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("h3", [
-          _vm._v("User Logs "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-sm btn-outline-success mr-4",
+              on: {
+                click: function($event) {
+                  return _vm.$emit("view-dashboard")
+                }
+              }
+            },
+            [_c("i", { staticClass: "fa fa-arrow-left" })]
+          ),
+          _vm._v(" User Logs "),
           _c("em", { staticClass: "text-muted" }, [
             _vm._v(_vm._s(_vm.user.name))
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _vm.results
+          ? _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.results, function(log) {
+                  return _c("tr", { key: log.id }, [
+                    _c("td", [_vm._v(_vm._s(log.slug))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(log.message))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(log.formated_date))])
+                  ])
+                }),
+                0
+              )
+            ])
+          : _vm._e()
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Log Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Message")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created At")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

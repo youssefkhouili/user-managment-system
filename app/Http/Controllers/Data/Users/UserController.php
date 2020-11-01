@@ -42,7 +42,5 @@ class UserController extends Controller
         event(new DeletingUser($user));
 
         return response()->json(["msg" => "Successfully deleted $user->name"]);
-
-        // return "successfully deleted {$user->name}";
     }
 }

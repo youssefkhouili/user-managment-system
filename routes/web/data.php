@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(["prefix" => "users", "namespace" => "Users"], function () {
+
+    Route::group(["prefix" => "logs", "namespace" => "Logs"], function () {
+        Route::get('{id}', 'UserController@index');
+    });
+
     Route::get('/', 'UserController@index');
     Route::post('/', 'UserController@store');
     Route::delete('/{user}', 'UserController@destroy');
